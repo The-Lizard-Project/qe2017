@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">QE 2017</string>
+    <string name="add">Add</string>
+    <string name="priority">Priority: %s</string>
+    <string name="category">Category: %s</string>
+    <string name="nameHint">Name</string>
+    <string name="categoryTitle">Category</string>
+    <string name="priorityTitle">Priority</string>
+    <string name="snackbarText">Fill the name field!</string>
+</resources>

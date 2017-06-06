@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="pl.lizardproject.qe2017.itemlist.ItemViewModel"/>
+    </data>
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{viewModel::onClickCommand}"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp">
+        <TextView
+            android:id="@+id/text"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@{viewModel.item.name}"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            app:layout_widthPercent="80%"/>
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:paddingTop="6dp"
+            android:text="@{String.format(@string/category, viewModel.item.category.toString().toLowerCase())}"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/colorAccent"
+            app:layout_widthPercent="80%"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/category"
+            android:text="@{String.format(@string/priority, viewModel.item.priority.toString().toLowerCase())}"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/colorAccent"
+            app:layout_widthPercent="80%"/>
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/text"
+            android:checked="@{viewModel.item.isChecked}"
+            app:layout_widthPercent="10%"
+            app:onCheckedChangeListener="@{viewModel::onCheckChangedCommand}"/>
+
+        <ImageView
+            android:id="@+id/deleteButton"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/checkbox"
+            android:onClick="@{viewModel::onDeleteClickCommand}"
+            android:scaleType="fitEnd"
+            android:src="@drawable/delete"
+            app:layout_widthPercent="10%"/>
+    </android.support.percent.PercentRelativeLayout>
+</layout>

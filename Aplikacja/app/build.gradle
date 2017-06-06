@@ -1,0 +1,89 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'spoon'
+
+spoon {
+    // for debug output
+    debug = true
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
+
+    defaultConfig {
+        applicationId "pl.lizardproject.qe2017"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+        version = "2.3.0"
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:percent:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'io.reactivex:rxkotlin:1.0.0'   // compile 'io.reactivex.rxjava2:rxkotlin:2.0.3'
+    compile 'io.reactivex:rxandroid:1.2.1'  // compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex:rxjava:1.3.0'     // compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+
+    kapt "com.android.databinding:compiler:$android.dataBinding.version"
+
+    compile 'io.requery:requery:1.3.2'
+    compile 'io.requery:requery-kotlin:1.3.2'
+    compile 'io.requery:requery-android:1.3.2'
+    kapt 'io.requery:requery-processor:1.3.2'
+    compile 'io.requery:sqlite-android:3.19.2'
+
+    compile 'com.f2prateek.dart:dart:2.0.2'
+    kapt 'com.f2prateek.dart:dart-processor:2.0.2'
+    compile 'com.f2prateek.dart:henson:2.0.2'
+    kapt 'com.f2prateek.dart:henson-processor:2.0.2'
+
+    //Espresso
+    androidTestCompile 'com.android.support:support-annotations:25.3.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'appcompat-v7'
+        exclude module: 'design'
+    }
+    androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+    androidTestCompile 'junit:junit:4.12'
+}
+kapt {
+    generateStubs = true
+}
+
+tasks.withType(com.android.build.gradle.internal.tasks.databinding.DataBindingExportBuildInfoTask) { task ->
+    if (task.name.endsWith("AndroidTest")) {
+        task.finalizedBy(tasks.create("${task.name}Workaround") << {
+            task.output.deleteDir()
+        })
+    }
+}
