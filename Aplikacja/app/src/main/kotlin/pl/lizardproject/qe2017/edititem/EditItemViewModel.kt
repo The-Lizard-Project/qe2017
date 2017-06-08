@@ -32,7 +32,7 @@ class EditItemViewModel(val itemId: Int?, private val activity: Activity, privat
             databaseFacade.saveItem(Item(itemId, newItemName.get(), Category.values()[newItemCategoryPosition.get()], Priority.values()[newItemPriorityPosition.get()]))
             activity.finish()
         } else {
-            Snackbar.make(view, activity.getString(R.string.snackbarText), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, activity.getString(R.string.editItemError), Snackbar.LENGTH_SHORT).show()
         }
     }
 

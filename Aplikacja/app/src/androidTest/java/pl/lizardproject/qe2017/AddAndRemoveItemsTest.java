@@ -19,7 +19,7 @@ public class AddAndRemoveItemsTest {
     private ItemListPage itemListPage;
 
     @Rule
-    public ActivityTestRule<ItemListActivity> itemListActivityActivityTestRule = new ActivityTestRule<ItemListActivity>(ItemListActivity.class);
+    public ActivityTestRule<ItemListActivity> itemListActivityActivityTestRule = new ActivityTestRule<>(ItemListActivity.class);
 
     @Before
     public void before() {

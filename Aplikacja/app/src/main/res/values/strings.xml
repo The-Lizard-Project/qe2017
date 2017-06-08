@@ -4,7 +4,12 @@
     <string name="priority">Priority: %s</string>
     <string name="category">Category: %s</string>
     <string name="nameHint">Name</string>
+    <string name="usernameHint">Username</string>
+    <string name="passwordHint">Password</string>
     <string name="categoryTitle">Category</string>
     <string name="priorityTitle">Priority</string>
-    <string name="snackbarText">Fill the name field!</string>
+    <string name="editItemError">Fill the name field!</string>
+    <string name="loginError">Wrong username or password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>

@@ -1,9 +1,7 @@
 package pl.lizardproject.qe2017.databinding
 
-import android.databinding.BindingAdapter
-import android.databinding.InverseBindingMethod
-import android.databinding.InverseBindingMethods
-import android.databinding.ObservableArrayList
+import android.databinding.*
+import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Spinner
@@ -23,4 +21,7 @@ fun bindRecyclerViewItems(view: RecyclerView, list: ObservableArrayList<Item>) {
 }
 
 @InverseBindingMethods(InverseBindingMethod(type = Spinner::class, attribute = "android:selectedItemPosition"))
-class SpinnerBindingAdapters {}
+class SpinnerBindingAdapters
+
+@BindingMethods(BindingMethod(type = TextInputLayout::class, attribute = "app:errorText", method = "setError"))
+class TextInputLayoutBindingAdapters

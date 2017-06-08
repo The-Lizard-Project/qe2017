@@ -10,8 +10,10 @@ import pl.lizardproject.qe2017.BuildConfig
 import pl.lizardproject.qe2017.database.converter.toAppModel
 import pl.lizardproject.qe2017.database.converter.toDbModel
 import pl.lizardproject.qe2017.database.model.DbItemEntity
+import pl.lizardproject.qe2017.database.model.DbUserEntity
 import pl.lizardproject.qe2017.database.model.Models
 import pl.lizardproject.qe2017.model.Item
+import pl.lizardproject.qe2017.model.User
 import rx.Single
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -74,4 +76,10 @@ class DatabaseFacade(private val context: Context) {
             .subscribeOn(scheduler)
             .map { it.first { it.id == itemId } }
             .map { it.toAppModel() }
+
+    fun hasUser(user: User) = storage.select(DbUserEntity::class.java)
+            .where(DbUserEntity.NAME.lower().eq(user.name)).and(DbUserEntity.PASSWORD.eq(user.password))
+            .get()
+            .mapNotNull {}
+            .isNotEmpty()
 }
