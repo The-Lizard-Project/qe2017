@@ -45,6 +45,8 @@ class LoginViewModel(private val databaseFacade: DatabaseFacade, private val use
 
     private fun loginUser(user: User, context: Context) {
         userSession.start(user)
-        context.startActivity(Intent(context, ItemListActivity::class.java))
+        val intent = Intent(context, ItemListActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK + Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
     }
 }

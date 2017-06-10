@@ -17,13 +17,12 @@ class EditItemActivity : AppCompatActivity() {
     @InjectExtra @JvmField var itemId: Int? = null
 
     private val application: MyApplication by lazy { getApplication() as MyApplication }
-    private lateinit var viewModel: EditItemViewModel
+    private val viewModel by lazy { EditItemViewModel(itemId, this, application.databaseFacade, application.userSession) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Dart.inject(this)
 
-        viewModel = EditItemViewModel(itemId, this, application.databaseFacade, application.userSession)
         (DataBindingUtil.setContentView<ViewDataBinding>(this, R.layout.activity_edit_item) as ActivityEditItemBinding).viewModel = viewModel
     }
 
