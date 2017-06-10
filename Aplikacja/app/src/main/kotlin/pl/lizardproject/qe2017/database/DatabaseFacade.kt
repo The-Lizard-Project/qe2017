@@ -7,17 +7,14 @@ import io.requery.rx.RxSupport
 import io.requery.sql.EntityDataStore
 import io.requery.sql.TableCreationMode
 import pl.lizardproject.qe2017.BuildConfig
-import pl.lizardproject.qe2017.database.converter.toAppModel
-import pl.lizardproject.qe2017.database.converter.toDbModel
 import pl.lizardproject.qe2017.database.model.DbItemEntity
 import pl.lizardproject.qe2017.database.model.DbUserEntity
 import pl.lizardproject.qe2017.database.model.Models
-import pl.lizardproject.qe2017.model.Item
-import pl.lizardproject.qe2017.model.User
 import rx.Single
-import rx.android.schedulers.AndroidSchedulers
+import rx.lang.kotlin.toSingle
 import rx.schedulers.Schedulers
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class DatabaseFacade(private val context: Context) {
 
@@ -36,16 +33,15 @@ class DatabaseFacade(private val context: Context) {
         RxSupport.toReactiveStore(EntityDataStore<Persistable>(source.configuration))
     }
 
-    fun saveItem(item: Item) {
-        storage.findByKey(DbItemEntity::class.java, item.id)
-                .subscribeOn(scheduler)
-                .flatMap { dbItem ->
-                    if (dbItem != null) {
-                        storage.update(item.toDbModel(dbItem))
-                    } else {
-                        storage.insert(item.toDbModel())
-                    }
-                }
+    fun saveItem(item: DbItemEntity) {
+        val single: Single<DbItemEntity>
+        if (item.id > 0) {
+            single = storage.update(item)
+        } else {
+            single = storage.insert(item)
+        }
+
+        single.subscribeOn(scheduler)
                 .subscribe { }
     }
 
@@ -54,32 +50,26 @@ class DatabaseFacade(private val context: Context) {
             .get()
             .toSelfObservable()
             .subscribeOn(scheduler)
-            .map { it.map { it.toAppModel() } }
-            .observeOn(AndroidSchedulers.mainThread())
 
-    fun deleteItem(item: Item) {
-        storage.findByKey(DbItemEntity::class.java, item.id)
+    fun deleteItem(item: DbItemEntity) {
+        storage.delete(item)
                 .subscribeOn(scheduler)
-                .flatMap { dbItem ->
-                    if (dbItem != null) {
-                        storage.delete(item.toDbModel(dbItem))
-                    } else {
-                        Single.just(dbItem)
-                    }
-                }
                 .subscribe { }
     }
 
-    fun loadItem(itemId: Int?) = storage.select(DbItemEntity::class.java)
-            .get()
-            .toSelfObservable()
-            .subscribeOn(scheduler)
+    fun loadItem(itemId: Int?) = loadItems()
             .map { it.first { it.id == itemId } }
-            .map { it.toAppModel() }
 
-    fun hasUser(user: User) = storage.select(DbUserEntity::class.java)
-            .where(DbUserEntity.NAME.lower().eq(user.name)).and(DbUserEntity.PASSWORD.eq(user.password))
+    fun hasUser(user: DbUserEntity) = storage.select(DbUserEntity::class.java)
+            .where(DbUserEntity.NAME.lower().eq(user.name))
             .get()
-            .mapNotNull {}
-            .isNotEmpty()
+            .toSingle()
+            .subscribeOn(scheduler)
+            .delay(3, TimeUnit.SECONDS)
+            .map { it.mapNotNull { it }.isNotEmpty() }
+
+    fun saveUser(user: DbUserEntity) =
+            storage.insert(user)
+                    .subscribeOn(scheduler)
+                    .delay(3, TimeUnit.SECONDS)
 }

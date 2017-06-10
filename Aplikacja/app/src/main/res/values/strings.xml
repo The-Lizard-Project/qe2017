@@ -10,6 +10,8 @@
     <string name="priorityTitle">Priority</string>
     <string name="editItemError">Fill the name field!</string>
     <string name="loginError">Wrong username or password</string>
+    <string name="registerErrorUserExists">User already exists</string>
+    <string name="registerError">Username and password shouldn\'t be blank</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
 </resources>

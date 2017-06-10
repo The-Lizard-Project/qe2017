@@ -16,11 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".itemlist.ItemListActivity"/>
+        <activity android:name=".itemlist.ItemListActivity"/>
+        <activity android:name=".register.RegisterActivity"/>
         <activity
             android:name=".edititem.EditItemActivity"
             android:windowSoftInputMode="adjustResize"/>
     </application>
-
 </manifest>

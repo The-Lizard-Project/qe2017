@@ -7,6 +7,8 @@ import android.text.TextUtils
 import android.view.View
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.database.DatabaseFacade
+import pl.lizardproject.qe2017.database.converter.toAppModel
+import pl.lizardproject.qe2017.database.converter.toDbModel
 import pl.lizardproject.qe2017.model.Category
 import pl.lizardproject.qe2017.model.Item
 import pl.lizardproject.qe2017.model.Priority
@@ -18,6 +20,7 @@ class EditItemViewModel(val itemId: Int?, private val activity: Activity, privat
     val newItemPriorityPosition = ObservableField(Priority.NORMAL.ordinal)
 
     private var subscription = databaseFacade.loadItem(itemId)
+            .map { it.toAppModel() }
             .subscribe({
                 newItemName.set(it.name)
                 newItemCategoryPosition.set(it.category.ordinal)
@@ -29,7 +32,8 @@ class EditItemViewModel(val itemId: Int?, private val activity: Activity, privat
 
     fun saveItemCommand(view: View) {
         if (!TextUtils.isEmpty(newItemName.get())) {
-            databaseFacade.saveItem(Item(itemId, newItemName.get(), Category.values()[newItemCategoryPosition.get()], Priority.values()[newItemPriorityPosition.get()]))
+            val dbItem = Item(itemId, newItemName.get(), Category.values()[newItemCategoryPosition.get()], Priority.values()[newItemPriorityPosition.get()]).toDbModel()
+            databaseFacade.saveItem(dbItem)
             activity.finish()
         } else {
             Snackbar.make(view, activity.getString(R.string.editItemError), Snackbar.LENGTH_SHORT).show()

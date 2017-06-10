@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="pl.lizardproject.qe2017.login.LoginViewModel"/>
+            type="pl.lizardproject.qe2017.register.RegisterViewModel"/>
     </data>
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -48,14 +48,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
-                android:enabled="@{!viewModel.showSpinner}"
-                android:onClick="@{viewModel::loginCommand}"
-                android:text="@string/login"/>
-            <Button
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:enabled="@{!viewModel.showSpinner}"
                 android:onClick="@{viewModel::registerCommand}"
                 android:text="@string/register"/>
