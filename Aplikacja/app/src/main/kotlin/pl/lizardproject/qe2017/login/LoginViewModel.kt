@@ -6,12 +6,13 @@ import android.databinding.ObservableField
 import android.view.View
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.database.DatabaseFacade
-import pl.lizardproject.qe2017.database.converter.toDbModel
+import pl.lizardproject.qe2017.database.converter.toAppModel
 import pl.lizardproject.qe2017.itemlist.ItemListActivity
 import pl.lizardproject.qe2017.model.User
 import pl.lizardproject.qe2017.register.RegisterActivity
 import pl.lizardproject.qe2017.session.UserSession
 import rx.Single
+import rx.Subscription
 
 class LoginViewModel(private val databaseFacade: DatabaseFacade, private val userSession: UserSession) {
 
@@ -20,24 +21,26 @@ class LoginViewModel(private val databaseFacade: DatabaseFacade, private val use
     val errorText = ObservableField<String>("")
     val showSpinner = ObservableField(false)
 
-    fun loginCommand(view: View) {
-        val user = User(username.get(), password.get())
+    private var subscription: Subscription? = null
 
-        Single.just(user)
+    fun loginCommand(view: View) {
+        subscription = Single.just(username.get())
                 .doOnSubscribe { showSpinner.set(true) }
-                .map { it.toDbModel() }
-                .flatMap { databaseFacade.hasUser(it) }
-                .flatMap { if (it) Single.just(user) else Single.error(Exception(view.context.getString(R.string.loginError))) }
-//                .doAfterTerminate { showSpinner.set(false) }
+                .flatMap { databaseFacade.loadUser(it) }
+                .flatMap { if (it != null) Single.just(it) else Single.error(Exception(view.context.getString(R.string.loginError))) }
                 .doOnError { showSpinner.set(false) }
                 .subscribe(
-                        { loginUser(it, view.context) },
+                        { loginUser(it.toAppModel(), view.context) },
                         { errorText.set(it.message) }
                           )
     }
 
     fun registerCommand(view: View) {
         view.context.startActivity(Intent(view.context, RegisterActivity::class.java))
+    }
+
+    fun dispose() {
+        subscription?.unsubscribe()
     }
 
     private fun loginUser(user: User, context: Context) {

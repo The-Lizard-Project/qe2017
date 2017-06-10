@@ -10,9 +10,15 @@ import pl.lizardproject.qe2017.databinding.ActivityLoginBinding
 class LoginActivity : AppCompatActivity() {
 
     private val application: MyApplication by lazy { getApplication() as MyApplication }
+    private val viewModel by lazy { LoginViewModel(application.databaseFacade, application.userSession) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login).viewModel = LoginViewModel(application.databaseFacade, application.userSession)
+        DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login).viewModel = viewModel
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.dispose()
     }
 }

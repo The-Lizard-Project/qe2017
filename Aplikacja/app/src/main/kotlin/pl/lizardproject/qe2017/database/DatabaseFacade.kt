@@ -45,7 +45,8 @@ class DatabaseFacade(private val context: Context) {
                 .subscribe { }
     }
 
-    fun loadItems() = storage.select(DbItemEntity::class.java)
+    fun loadItems(userId: Int) = storage.select(DbItemEntity::class.java)
+            .where(DbItemEntity.USER_ID.eq(userId))
             .orderBy(DbItemEntity.CHECKED.asc())
             .get()
             .toSelfObservable()
@@ -57,19 +58,19 @@ class DatabaseFacade(private val context: Context) {
                 .subscribe { }
     }
 
-    fun loadItem(itemId: Int?) = loadItems()
-            .map { it.first { it.id == itemId } }
+    fun loadItem(itemId: Int?) = storage.findByKey(DbItemEntity::class.java, itemId)
+            .subscribeOn(scheduler)
 
-    fun hasUser(user: DbUserEntity) = storage.select(DbUserEntity::class.java)
-            .where(DbUserEntity.NAME.lower().eq(user.name))
+    fun loadUser(username: String) = storage.select(DbUserEntity::class.java)
+            .where(DbUserEntity.NAME.lower().eq(username))
             .get()
             .toSingle()
             .subscribeOn(scheduler)
-            .delay(3, TimeUnit.SECONDS)
-            .map { it.mapNotNull { it }.isNotEmpty() }
+            .delay(1, TimeUnit.SECONDS)
+            .map { it.firstOrNull() }
 
     fun saveUser(user: DbUserEntity) =
             storage.insert(user)
                     .subscribeOn(scheduler)
-                    .delay(3, TimeUnit.SECONDS)
+                    .delay(1, TimeUnit.SECONDS)
 }

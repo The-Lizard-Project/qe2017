@@ -7,12 +7,13 @@ import pl.lizardproject.qe2017.database.DatabaseFacade
 import pl.lizardproject.qe2017.database.converter.toAppModel
 import pl.lizardproject.qe2017.edititem.Henson
 import pl.lizardproject.qe2017.model.Item
+import pl.lizardproject.qe2017.session.UserSession
 
-class ItemListViewModel(databaseFacade: DatabaseFacade) {
+class ItemListViewModel(databaseFacade: DatabaseFacade, userSession: UserSession) {
 
     val items = ObservableArrayList<Item>()
 
-    private var subscription = databaseFacade.loadItems()
+    private var subscription = databaseFacade.loadItems(userSession.user!!.id!!)
             .map { it.map { it.toAppModel() } }
             .subscribe({ values ->
                 items.clear()
