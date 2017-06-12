@@ -3,6 +3,8 @@ package pl.lizardproject.qe2017.itemlist
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import pl.lizardproject.qe2017.MyApplication
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.databinding.ActivityItemListBinding
@@ -20,5 +22,15 @@ class ItemListActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.dispose()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_item_list, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.logout(this)
+        return true
     }
 }

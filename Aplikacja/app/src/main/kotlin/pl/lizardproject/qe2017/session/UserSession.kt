@@ -10,7 +10,7 @@ class UserSession {
         this.user = user
     }
 
-    fun finish() {
+    fun end() {
         user = null
     }
 }
