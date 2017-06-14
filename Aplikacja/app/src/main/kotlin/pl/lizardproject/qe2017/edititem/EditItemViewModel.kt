@@ -14,7 +14,7 @@ import pl.lizardproject.qe2017.model.Item
 import pl.lizardproject.qe2017.model.Priority
 import pl.lizardproject.qe2017.session.UserSession
 
-class EditItemViewModel(val itemId: Int?, private val activity: Activity, private val databaseFacade: DatabaseFacade, private val userSession: UserSession) {
+class EditItemViewModel(private val itemId: Int?, private val activity: Activity, private val databaseFacade: DatabaseFacade, private val userSession: UserSession) {
 
     val newItemName = ObservableField("")
     val newItemCategoryPosition = ObservableField(Category.FRUITS.ordinal)
@@ -35,9 +35,11 @@ class EditItemViewModel(val itemId: Int?, private val activity: Activity, privat
         if (!TextUtils.isEmpty(newItemName.get())) {
             val dbItem = Item(itemId, newItemName.get(), Category.values()[newItemCategoryPosition.get()], Priority.values()[newItemPriorityPosition.get()], userSession.user!!).toDbModel()
             databaseFacade.saveItem(dbItem)
-            activity.finish()
+                    .subscribe(
+                            { activity.finish() },
+                            { Snackbar.make(view, activity.getString(R.string.editItemErrorItemExists), Snackbar.LENGTH_SHORT).show() })
         } else {
-            Snackbar.make(view, activity.getString(R.string.editItemError), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, activity.getString(R.string.editItemErrorEmptyName), Snackbar.LENGTH_SHORT).show()
         }
     }
 

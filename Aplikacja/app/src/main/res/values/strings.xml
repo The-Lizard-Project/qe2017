@@ -8,7 +8,9 @@
     <string name="passwordHint">Password</string>
     <string name="categoryTitle">Category</string>
     <string name="priorityTitle">Priority</string>
-    <string name="editItemError">Fill the name field!</string>
+    <string name="editItemErrorEmptyName">Fill the name field!</string>
+    <string name="editItemErrorItemExists">Item already exists!</string>
+    <string name="error">Something went wrong…</string>
     <string name="loginError">Wrong username or password</string>
     <string name="registerErrorUserExists">User already exists</string>
     <string name="registerError">Username and password shouldn\'t be blank</string>

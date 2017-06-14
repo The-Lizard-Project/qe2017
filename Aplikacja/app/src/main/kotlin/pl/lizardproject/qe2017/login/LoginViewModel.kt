@@ -28,8 +28,7 @@ class LoginViewModel(private val databaseFacade: DatabaseFacade, private val use
                 .doOnError { showSpinner.set(false) }
                 .subscribe(
                         { loginUser(it.toAppModel()) },
-                        { errorText.set(it.message) }
-                          )
+                        { errorText.set(it.message) })
     }
 
     fun registerCommand(ignored: View) {

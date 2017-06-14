@@ -33,7 +33,7 @@ class DatabaseFacade(private val context: Context) {
         RxSupport.toReactiveStore(EntityDataStore<Persistable>(source.configuration))
     }
 
-    fun saveItem(item: DbItemEntity) {
+    fun saveItem(item: DbItemEntity): Single<DbItemEntity> {
         val single: Single<DbItemEntity>
         if (item.id > 0) {
             single = storage.update(item)
@@ -41,8 +41,7 @@ class DatabaseFacade(private val context: Context) {
             single = storage.insert(item)
         }
 
-        single.subscribeOn(scheduler)
-                .subscribe { }
+        return single.subscribeOn(scheduler)
     }
 
     fun loadItems(userId: Int) = storage.select(DbItemEntity::class.java)

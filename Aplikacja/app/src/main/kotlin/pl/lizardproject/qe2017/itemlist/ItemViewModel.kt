@@ -1,8 +1,10 @@
 package pl.lizardproject.qe2017.itemlist
 
 import android.databinding.ObservableField
+import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.CompoundButton
+import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.database.DatabaseFacade
 import pl.lizardproject.qe2017.database.converter.toDbModel
 import pl.lizardproject.qe2017.model.Item
@@ -12,9 +14,12 @@ class ItemViewModel(item: Item, private val databaseFacade: DatabaseFacade, priv
 
     val item = ObservableField(item)
 
-    fun onCheckChangedCommand(ignored: CompoundButton, isChecked: Boolean) {
+    fun onCheckChangedCommand(view: CompoundButton, isChecked: Boolean) {
         if (item.get().isChecked != isChecked) {
             databaseFacade.saveItem(item.get().checkItem(isChecked).toDbModel())
+                    .subscribe(
+                            { },
+                            { Snackbar.make(view, view.context.getString(R.string.error), Snackbar.LENGTH_SHORT).show() })
         }
     }
 

@@ -35,8 +35,7 @@ class RegisterViewModel(private val databaseFacade: DatabaseFacade, private val 
                     .doOnError { showSpinner.set(false) }
                     .subscribe(
                             { it -> performUser(it.toAppModel()) },
-                            { errorText.set(it.message) }
-                              )
+                            { errorText.set(it.message) })
         } else {
             errorText.set(view.context.getString(R.string.registerError))
         }
