@@ -6,11 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import pl.lizardproject.qe2017.MyApplication
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.databinding.ActivityLoginBinding
+import pl.lizardproject.qe2017.navigation.AppNavigator
 
 class LoginActivity : AppCompatActivity() {
 
     private val application: MyApplication by lazy { getApplication() as MyApplication }
-    private val viewModel by lazy { LoginViewModel(application.databaseFacade, application.userSession) }
+    private val viewModel by lazy { LoginViewModel(application.databaseFacade, application.userSession, AppNavigator(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

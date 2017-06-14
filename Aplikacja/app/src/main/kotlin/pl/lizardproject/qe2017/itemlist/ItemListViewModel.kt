@@ -1,18 +1,15 @@
 package pl.lizardproject.qe2017.itemlist
 
-import android.content.Context
-import android.content.Intent
 import android.databinding.ObservableArrayList
 import android.util.Log
 import android.view.View
 import pl.lizardproject.qe2017.database.DatabaseFacade
 import pl.lizardproject.qe2017.database.converter.toAppModel
-import pl.lizardproject.qe2017.edititem.Henson
-import pl.lizardproject.qe2017.login.LoginActivity
 import pl.lizardproject.qe2017.model.Item
+import pl.lizardproject.qe2017.navigation.AppNavigator
 import pl.lizardproject.qe2017.session.UserSession
 
-class ItemListViewModel(databaseFacade: DatabaseFacade, private val userSession: UserSession) {
+class ItemListViewModel(databaseFacade: DatabaseFacade, private val userSession: UserSession, private val appNavigator: AppNavigator) {
 
     val items = ObservableArrayList<Item>()
 
@@ -23,18 +20,13 @@ class ItemListViewModel(databaseFacade: DatabaseFacade, private val userSession:
                 items.addAll(values)
             }, { ex -> Log.e("TAG", ex.message, ex) })
 
-    fun addItemCommand(view: View) {
-        view.context.startActivity(
-                Henson.with(view.context)
-                        .gotoEditItemActivity()
-                        .build())
+    fun addItemCommand(ignored: View) {
+        appNavigator.openEditItemActivity()
     }
 
-    fun logout(context: Context) {
+    fun logout() {
         userSession.end()
-        val intent = Intent(context, LoginActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK + Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+        appNavigator.openLoginActivity()
     }
 
     fun dispose() {

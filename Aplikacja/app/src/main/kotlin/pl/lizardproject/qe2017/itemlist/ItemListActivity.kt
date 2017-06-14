@@ -8,11 +8,12 @@ import android.view.MenuItem
 import pl.lizardproject.qe2017.MyApplication
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.databinding.ActivityItemListBinding
+import pl.lizardproject.qe2017.navigation.AppNavigator
 
 class ItemListActivity : AppCompatActivity() {
 
     private val application: MyApplication by lazy { getApplication() as MyApplication }
-    private val viewModel by lazy { ItemListViewModel(application.databaseFacade, application.userSession) }
+    private val viewModel by lazy { ItemListViewModel(application.databaseFacade, application.userSession, AppNavigator(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,7 @@ class ItemListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        viewModel.logout(this)
+        viewModel.logout()
         return true
     }
 }

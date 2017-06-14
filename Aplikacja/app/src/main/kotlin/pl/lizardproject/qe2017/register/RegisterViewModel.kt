@@ -1,20 +1,18 @@
 package pl.lizardproject.qe2017.register
 
-import android.content.Context
-import android.content.Intent
 import android.databinding.ObservableField
 import android.view.View
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.database.DatabaseFacade
 import pl.lizardproject.qe2017.database.converter.toAppModel
 import pl.lizardproject.qe2017.database.converter.toDbModel
-import pl.lizardproject.qe2017.itemlist.ItemListActivity
 import pl.lizardproject.qe2017.model.User
+import pl.lizardproject.qe2017.navigation.AppNavigator
 import pl.lizardproject.qe2017.session.UserSession
 import rx.Single
 import rx.Subscription
 
-class RegisterViewModel(private val databaseFacade: DatabaseFacade, private val userSession: UserSession) {
+class RegisterViewModel(private val databaseFacade: DatabaseFacade, private val userSession: UserSession, private val appNavigator: AppNavigator) {
 
     val username = ObservableField("")
     val password = ObservableField("")
@@ -36,7 +34,7 @@ class RegisterViewModel(private val databaseFacade: DatabaseFacade, private val 
                     }
                     .doOnError { showSpinner.set(false) }
                     .subscribe(
-                            { it -> performUser(it.toAppModel(), view.context) },
+                            { it -> performUser(it.toAppModel()) },
                             { errorText.set(it.message) }
                               )
         } else {
@@ -48,10 +46,8 @@ class RegisterViewModel(private val databaseFacade: DatabaseFacade, private val 
         subscription?.unsubscribe()
     }
 
-    private fun performUser(user: User, context: Context) {
+    private fun performUser(user: User) {
         userSession.start(user)
-        val intent = Intent(context, ItemListActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK + Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+        appNavigator.openItemListActivity()
     }
 }

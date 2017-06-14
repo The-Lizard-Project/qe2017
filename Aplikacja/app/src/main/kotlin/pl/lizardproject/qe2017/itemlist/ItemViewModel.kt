@@ -5,10 +5,10 @@ import android.view.View
 import android.widget.CompoundButton
 import pl.lizardproject.qe2017.database.DatabaseFacade
 import pl.lizardproject.qe2017.database.converter.toDbModel
-import pl.lizardproject.qe2017.edititem.Henson
 import pl.lizardproject.qe2017.model.Item
+import pl.lizardproject.qe2017.navigation.AppNavigator
 
-class ItemViewModel(item: Item, private val databaseFacade: DatabaseFacade) {
+class ItemViewModel(item: Item, private val databaseFacade: DatabaseFacade, private val appNavigator: AppNavigator) {
 
     val item = ObservableField(item)
 
@@ -22,10 +22,7 @@ class ItemViewModel(item: Item, private val databaseFacade: DatabaseFacade) {
         databaseFacade.deleteItem(item.get().toDbModel())
     }
 
-    fun onClickCommand(view: View) {
-        view.context.startActivity(Henson.with(view.context)
-                .gotoEditItemActivity()
-                .itemId(item.get().id!!)
-                .build())
+    fun onClickCommand(ignored: View) {
+        appNavigator.openEditItemActivity(item.get().id)
     }
 }
