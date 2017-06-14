@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Spinner
 import pl.lizardproject.qe2017.itemlist.ItemRecyclerViewAdapter
+import pl.lizardproject.qe2017.messages.Messenger
 import pl.lizardproject.qe2017.model.Item
 import pl.lizardproject.qe2017.view.itemdecoration.DividerItemDecoration
 
@@ -13,7 +14,7 @@ import pl.lizardproject.qe2017.view.itemdecoration.DividerItemDecoration
 fun bindRecyclerViewItems(view: RecyclerView, list: ObservableArrayList<Item>) {
     if (view.adapter == null) {
         view.layoutManager = LinearLayoutManager(view.context)
-        view.adapter = ItemRecyclerViewAdapter(list, view.context)
+        view.adapter = ItemRecyclerViewAdapter(list, Messenger(), view.context)
         view.addItemDecoration(DividerItemDecoration(view.context, (view.layoutManager as LinearLayoutManager).orientation))
     } else {
         view.adapter.notifyDataSetChanged()

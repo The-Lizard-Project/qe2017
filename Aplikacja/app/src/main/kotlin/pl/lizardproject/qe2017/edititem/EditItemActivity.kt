@@ -11,13 +11,15 @@ import com.f2prateek.dart.InjectExtra
 import pl.lizardproject.qe2017.MyApplication
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.databinding.ActivityEditItemBinding
+import pl.lizardproject.qe2017.messages.Messenger
+import pl.lizardproject.qe2017.navigation.AppNavigator
 
 class EditItemActivity : AppCompatActivity() {
 
     @InjectExtra @JvmField var itemId: Int? = null
 
     private val application: MyApplication by lazy { getApplication() as MyApplication }
-    private val viewModel by lazy { EditItemViewModel(itemId, this, application.databaseFacade, application.userSession) }
+    private val viewModel by lazy { EditItemViewModel(itemId, application.databaseFacade, application.userSession, AppNavigator(this), Messenger()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

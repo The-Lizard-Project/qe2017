@@ -2,19 +2,19 @@ package pl.lizardproject.qe2017.edititem
 
 import android.app.Activity
 import android.databinding.ObservableField
-import android.support.design.widget.Snackbar
-import android.text.TextUtils
 import android.view.View
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.database.DatabaseFacade
 import pl.lizardproject.qe2017.database.converter.toAppModel
 import pl.lizardproject.qe2017.database.converter.toDbModel
+import pl.lizardproject.qe2017.messages.Messenger
 import pl.lizardproject.qe2017.model.Category
 import pl.lizardproject.qe2017.model.Item
 import pl.lizardproject.qe2017.model.Priority
+import pl.lizardproject.qe2017.navigation.AppNavigator
 import pl.lizardproject.qe2017.session.UserSession
 
-class EditItemViewModel(private val itemId: Int?, private val activity: Activity, private val databaseFacade: DatabaseFacade, private val userSession: UserSession) {
+class EditItemViewModel(private val itemId: Int?, private val databaseFacade: DatabaseFacade, private val userSession: UserSession, private val appNavigator: AppNavigator, private val messenger: Messenger) {
 
     val newItemName = ObservableField("")
     val newItemCategoryPosition = ObservableField(Category.FRUITS.ordinal)
@@ -32,14 +32,14 @@ class EditItemViewModel(private val itemId: Int?, private val activity: Activity
     val priorities = Priority.values().map { it.toString().toLowerCase() }
 
     fun saveItemCommand(view: View) {
-        if (!TextUtils.isEmpty(newItemName.get())) {
+        if (newItemName.get().isNotBlank()) {
             val dbItem = Item(itemId, newItemName.get(), Category.values()[newItemCategoryPosition.get()], Priority.values()[newItemPriorityPosition.get()], userSession.user!!).toDbModel()
             databaseFacade.saveItem(dbItem)
                     .subscribe(
-                            { activity.finish() },
-                            { Snackbar.make(view, activity.getString(R.string.editItemErrorItemExists), Snackbar.LENGTH_SHORT).show() })
+                            { appNavigator.closeActivity() },
+                            { messenger.showMessage(view, R.string.editItemErrorItemExists) })
         } else {
-            Snackbar.make(view, activity.getString(R.string.editItemErrorEmptyName), Snackbar.LENGTH_SHORT).show()
+            messenger.showMessage(view, R.string.editItemErrorEmptyName)
         }
     }
 

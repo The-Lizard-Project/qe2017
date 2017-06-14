@@ -11,10 +11,11 @@ import android.view.ViewGroup
 import pl.lizardproject.qe2017.MyApplication
 import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.databinding.ItemItemListBinding
+import pl.lizardproject.qe2017.messages.Messenger
 import pl.lizardproject.qe2017.model.Item
 import pl.lizardproject.qe2017.navigation.AppNavigator
 
-class ItemRecyclerViewAdapter(private val list: ObservableArrayList<Item>, context: Context) : RecyclerView.Adapter<ItemRecyclerViewAdapter.BindingViewHolder>() {
+class ItemRecyclerViewAdapter(private val list: ObservableArrayList<Item>, private val messenger: Messenger, context: Context) : RecyclerView.Adapter<ItemRecyclerViewAdapter.BindingViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
     private val databaseFacade = (context.applicationContext as MyApplication).databaseFacade
@@ -23,7 +24,7 @@ class ItemRecyclerViewAdapter(private val list: ObservableArrayList<Item>, conte
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingViewHolder(layoutInflater.inflate(R.layout.item_item_list, parent, false))
 
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
-        holder.binder.viewModel = ItemViewModel(list[position], databaseFacade, appNavigator)
+        holder.binder.viewModel = ItemViewModel(list[position], databaseFacade, appNavigator, messenger)
         holder.binder.executePendingBindings()
     }
 
