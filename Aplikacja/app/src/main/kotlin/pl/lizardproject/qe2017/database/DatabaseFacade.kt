@@ -18,11 +18,15 @@ import java.util.concurrent.TimeUnit
 
 class DatabaseFacade(private val context: Context) {
 
+    companion object {
+        private val DATABASE_NAME = "quality_excites_database"
+    }
+
     private val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
 
     val storage by lazy {
         // override onUpgrade to handle migrating to a new version
-        val source = SqlitexDatabaseSource(context, Models.DEFAULT, 1)
+        val source = SqlitexDatabaseSource(context, Models.DEFAULT, DATABASE_NAME, 1)
         source.setLoggingEnabled(true)
 
         if (BuildConfig.DEBUG) {
@@ -81,4 +85,8 @@ class DatabaseFacade(private val context: Context) {
             storage.insert(user)
                     .subscribeOn(scheduler)
                     .delay(1, TimeUnit.SECONDS)
+
+    fun drop() {
+        context.deleteDatabase(DATABASE_NAME)
+    }
 }
