@@ -69,6 +69,15 @@ class DatabaseFacade(private val context: Context) {
             .delay(1, TimeUnit.SECONDS)
             .map { it.firstOrNull() }
 
+    fun loadUser(username: String, password: String) = storage.select(DbUserEntity::class.java)
+            .where(DbUserEntity.NAME.lower().eq(username))
+            .and(DbUserEntity.PASSWORD.eq(password))
+            .get()
+            .toSingle()
+            .subscribeOn(scheduler)
+            .delay(1, TimeUnit.SECONDS)
+            .map { it.firstOrNull() }
+
     fun saveUser(user: DbUserEntity) =
             storage.insert(user)
                     .subscribeOn(scheduler)
