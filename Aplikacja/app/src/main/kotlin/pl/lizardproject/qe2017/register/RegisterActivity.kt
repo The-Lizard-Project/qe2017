@@ -10,8 +10,8 @@ import pl.lizardproject.qe2017.navigation.AppNavigator
 
 class RegisterActivity : AppCompatActivity() {
 
-    private val application: MyApplication by lazy { getApplication() as MyApplication }
-    private val viewModel by lazy { RegisterViewModel(application.databaseFacade, application.userSession, AppNavigator(this)) }
+    private val myApplication: MyApplication by lazy { application as MyApplication }
+    private val viewModel by lazy { RegisterViewModel(myApplication.databaseFacade, myApplication.userSession, AppNavigator(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

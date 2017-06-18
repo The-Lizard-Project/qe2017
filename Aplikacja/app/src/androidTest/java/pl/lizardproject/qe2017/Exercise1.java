@@ -1,15 +1,14 @@
 package pl.lizardproject.qe2017;
 
-import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import pl.lizardproject.qe2017.itemlist.ItemListActivity;
-import pl.lizardproject.qe2017.pages.ItemListPage;
+import pl.lizardproject.qe2017.login.LoginActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -24,131 +23,155 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class Exercise1 {
 
     @Rule
-    public ActivityTestRule<ItemListActivity> itemListActivityActivityTestRule = new ActivityTestRule<>(ItemListActivity.class);
+    public ActivityTestRule<LoginActivity> activityTestRule = new ActivityTestRule<>(LoginActivity.class);
+
+    @Before
+    public void setUp() {
+        ((MyApplication) activityTestRule.getActivity().getApplication()).getDatabaseFacade().drop();
+    }
 
     /* TODO TASK 1
-     * Use methods available via Espresso: onView(), withId(), perform(), click()
      *
-     * 1. Find button that adds item
+     * 1. Find register button
      * 2. Click on it
+     * 3. Validate if the screen is opened
+     * 4. Move to the previous screen
+     * 5. Validate if the screen is opened
      *
-     * 3. Move to the previous screen(hint: use pressBack())
+     * Methods: onView(), withId(), perform(), click(), check(), matches(), isDisplayed(), pressBack()
     */
     @Test
-    public void openAddItemScreen() {
-        //TODO 1,2
-        onView(withId(R.id.fabAdd)).perform(click());
-        onView(withId(R.id.fabSave)).check(matches(isDisplayed())); // validation (leave)
+    public void openRegisterScreen() {
+        //TODO 1,2,3
+        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.newUsernameEditText)).check(matches(isDisplayed()));
 
-        //TODO 3
-        pressBack(); // hide keyboard
+        //TODO 4,5
         pressBack();
-        onView(withId(R.id.fabAdd)).check(matches(isDisplayed())); // validation (leave)
+        onView(withId(R.id.usernameEditText)).check(matches(isDisplayed()));
     }
 
     /* TODO TASK 2
-     * Use selected methods from task 1 and new ones: typeText(), closeSoftKeyboard(), check(), matches(), isDisplayed()
      *
-     * 1. Find button that adds item
-     * 2. Click on it
-     * 3. Verify if user is on the right activity
+     * 1. Click on register button
+     * 2. Validate if the register screen is opened
+     * 3. Type username
+     * 4. Type password
+     * 5. Click on register button
+     * 6. Validate if the item list screen is opened
      *
-     * 4. Find edit text item
-     * 5. Type text there and close keyboard
-     * 6. Save added item
+     * New methods: typeText()
+    */
+    @Test
+    public void registerUser() {
+        //TODO 1,2
+        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.newUsernameEditText)).check(matches(isDisplayed()));
+
+        //TODO 3,4,5
+        onView(withId(R.id.newUsernameEditText)).perform(typeText("user"));
+        onView(withId(R.id.newPasswordEditText)).perform(typeText("pass"));
+        onView(withId(R.id.registerButton)).perform(click());
+
+        //TODO 6
+        onView(withId(R.id.fabAdd)).check(matches(isDisplayed()));
+    }
+
+    /* TODO TASK 3
      *
-     * 7. Verify if user was moved to the right activity
-     * 8. Verify if proper item was added
+     * 1. Click on register button
+     * 2. Validate if the register screen is opened
+     * 3. Type username
+     * 4. Type password
+     * 5. Click on register button
+     * 6. Validate if the item list screen is opened
+     * 7. Click on add item button
+     * 8. Validate if the add item screen is opened
+     * 9. Type item name
+     * 10. Click save button
+     * 11. Verify if item is added
+     *
+     * New methods: closeSoftKeyboard()
      *
      */
     @Test
     public void addItem() {
+        //TODO 1,2
+        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.newUsernameEditText)).check(matches(isDisplayed()));
 
-        ItemListPage itemListPage = new ItemListPage();
-        itemListPage.clearList();
+        //TODO 3,4,5,6
+        onView(withId(R.id.newUsernameEditText)).perform(typeText("user"));
+        onView(withId(R.id.newPasswordEditText)).perform(typeText("pass"));
+        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.fabAdd)).check(matches(isDisplayed()));
 
-        // remove all below
-
-        // TODO 1,2,3
+        //TODO 7,8
         onView(withId(R.id.fabAdd)).perform(click());
         onView(withId(R.id.newItemEditText)).check(matches(isDisplayed()));
 
-        // TODO 4,5,6
+        // TODO 9,10
         onView(withId(R.id.newItemEditText)).perform(typeText("ziemniaki"), closeSoftKeyboard());
         onView(withId(R.id.fabSave)).perform(click());
 
-        // TODO 7,8
+        // TODO 11
         onView(withId(R.id.text)).check(matches(withText("ziemniaki")));
-
     }
 
-    /* TODO TASK 3
-     * Use knowledge and selected methods from previous tasks and new ones: allOf(), withText()
+    /* TODO TASK 4
      *
-     * Add more than one item and verify
-     *
+     * 1. Click on register button
+     * 2. Validate if the register screen is opened
+     * 3. Type username
+     * 4. Type password
+     * 5. Click on register button
+     * 6. Validate if the item list screen is opened
+     * 7. Click on add item button
+     * 8. Validate if the add item screen is opened
+     * 9. Type item name
+     * 10. Click on category spinner
+     * 11. Click on chosen category
+     * 12. Click save button
+     * 13. Click on add item button
+     * 14. Validate if the add item screen is opened
+     * 15. Type item name
+     * 16. Click on priority spinner
+     * 17. Click on chosen priority
+     * 18. Click save button
+     * 19. Verify if items are added
      */
     @Test
-    public void addMoreThanOneItem() {
+    public void addTheSameItemNameTwice() {
+        //TODO 1,2
+        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.newUsernameEditText)).check(matches(isDisplayed()));
 
-        ItemListPage itemListPage = new ItemListPage();
-        itemListPage.clearList();
+        //TODO 3,4,5,6
+        onView(withId(R.id.newUsernameEditText)).perform(typeText("user"));
+        onView(withId(R.id.newPasswordEditText)).perform(typeText("pass"));
+        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.fabAdd)).check(matches(isDisplayed()));
 
-        // remove all below
-
-        // on the Product List click Add Button
+        //TODO 7,8,9,10,11,12
         onView(withId(R.id.fabAdd)).perform(click());
-
-        // On New Item screen type product name...
-        onView(withId(R.id.newItemEditText)).perform(typeText("ziemniaki"), closeSoftKeyboard());
-
-        // ...and Save
-        onView(withId(R.id.fabSave)).perform(click());
-
-        // Verify if Item was added
-        onView(withId(R.id.text)).check(matches(withText("ziemniaki")));
-
-        // Add second element
-        onView(withId(R.id.fabAdd)).perform(click());
-        onView(withId(R.id.newItemEditText)).perform(typeText("buraki"), closeSoftKeyboard());
-        onView(withId(R.id.fabSave)).perform(click());
-
-        // Validate if it was added
-
-        // wrong solution
-        //onView(withId(R.id.text)).check(matches(withText("buraki")));
-
-        // good solution
-        onView(allOf(withId(R.id.text), withText("buraki"))).check(matches(isDisplayed()));
-
-    }
-
-    /* TODO TASK 4 for volunteers
-     * Using chosen methods from previous tasks and Google :)
-     *
-     * Add more than one item with the same name but with different type or priority, then verify
-     *
-     */
-    @Test
-    public void addTheSameItemNameMoreThanOnce() {
-        //first item
-        onView(withId(R.id.fabAdd)).perform(click());
+        onView(withId(R.id.newItemEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.newItemEditText)).perform(typeText("buraki"), closeSoftKeyboard());
         onView(withId(R.id.category_spinner)).perform(click());
         onView(withText("other")).perform(click());
         onView(withId(R.id.fabSave)).perform(click());
 
-        //second one
+        //TODO 13,14,15,16,17,18
         onView(withId(R.id.fabAdd)).perform(click());
+        onView(withId(R.id.newItemEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.newItemEditText)).perform(typeText("buraki"), closeSoftKeyboard());
         onView(withId(R.id.priority_spinner)).perform(click());
         onView(withText("critical")).perform(click());
         onView(withId(R.id.fabSave)).perform(click());
 
+        //TODO 19
         onView(allOf(withId(R.id.text), withText("buraki"), hasSibling(withText("Category: other")))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.text), withText("buraki"), hasSibling(withText("Priority: critical")))).check(matches(isDisplayed()));
     }

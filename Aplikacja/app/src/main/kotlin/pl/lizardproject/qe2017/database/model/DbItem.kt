@@ -8,7 +8,7 @@ import pl.lizardproject.qe2017.model.Priority
 interface DbItem : Persistable {
     @get:Key @get:Generated var id: Int
 
-    @get:Column(unique = true) var name: String
+    var name: String
     var isChecked: Boolean
     var category: Category
     var priority: Priority

@@ -87,6 +87,7 @@ class DatabaseFacade(private val context: Context) {
                     .delay(1, TimeUnit.SECONDS)
 
     fun drop() {
-        context.deleteDatabase(DATABASE_NAME)
+        storage.delete(DbUserEntity::class.java).get().call()
+        storage.delete(DbItemEntity::class.java).get().call()
     }
 }

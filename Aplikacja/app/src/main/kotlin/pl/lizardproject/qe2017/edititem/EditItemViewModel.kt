@@ -1,6 +1,5 @@
 package pl.lizardproject.qe2017.edititem
 
-import android.app.Activity
 import android.databinding.ObservableField
 import android.view.View
 import pl.lizardproject.qe2017.R
@@ -37,7 +36,7 @@ class EditItemViewModel(private val itemId: Int?, private val databaseFacade: Da
             databaseFacade.saveItem(dbItem)
                     .subscribe(
                             { appNavigator.closeActivity() },
-                            { messenger.showMessage(view, R.string.editItemErrorItemExists) })
+                            { messenger.showMessage(view, it.message!!) })
         } else {
             messenger.showMessage(view, R.string.editItemErrorEmptyName)
         }

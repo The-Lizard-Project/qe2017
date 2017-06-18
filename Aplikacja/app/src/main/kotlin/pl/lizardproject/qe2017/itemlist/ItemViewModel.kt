@@ -3,7 +3,6 @@ package pl.lizardproject.qe2017.itemlist
 import android.databinding.ObservableField
 import android.view.View
 import android.widget.CompoundButton
-import pl.lizardproject.qe2017.R
 import pl.lizardproject.qe2017.database.DatabaseFacade
 import pl.lizardproject.qe2017.database.converter.toDbModel
 import pl.lizardproject.qe2017.messages.Messenger
@@ -19,7 +18,7 @@ class ItemViewModel(item: Item, private val databaseFacade: DatabaseFacade, priv
             databaseFacade.saveItem(item.get().checkItem(isChecked).toDbModel())
                     .subscribe(
                             { },
-                            { messenger.showMessage(view, R.string.error) })
+                            { messenger.showMessage(view, it.message!!) })
         }
     }
 

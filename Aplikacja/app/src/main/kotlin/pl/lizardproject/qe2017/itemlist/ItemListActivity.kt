@@ -12,8 +12,8 @@ import pl.lizardproject.qe2017.navigation.AppNavigator
 
 class ItemListActivity : AppCompatActivity() {
 
-    private val application: MyApplication by lazy { getApplication() as MyApplication }
-    private val viewModel by lazy { ItemListViewModel(application.databaseFacade, application.userSession, AppNavigator(this)) }
+    private val myApplication: MyApplication by lazy { application as MyApplication }
+    private val viewModel by lazy { ItemListViewModel(myApplication.databaseFacade, myApplication.userSession, AppNavigator(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -18,8 +18,8 @@ class EditItemActivity : AppCompatActivity() {
 
     @InjectExtra @JvmField var itemId: Int? = null
 
-    private val application: MyApplication by lazy { getApplication() as MyApplication }
-    private val viewModel by lazy { EditItemViewModel(itemId, application.databaseFacade, application.userSession, AppNavigator(this), Messenger()) }
+    private val myApplication: MyApplication by lazy { application as MyApplication }
+    private val viewModel by lazy { EditItemViewModel(itemId, myApplication.databaseFacade, myApplication.userSession, AppNavigator(this), Messenger()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
