@@ -1,10 +1,6 @@
-package pl.lizardproject.qe2017.pages;
-
-import android.util.Log;
+package pl.lizardproject.qe2017.pageobject;
 
 import pl.lizardproject.qe2017.R;
-import pl.lizardproject.qe2017.helpers.ActionHelper;
-import pl.lizardproject.qe2017.helpers.ActivityHelper;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -15,19 +11,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class AddItemPage {
+public class EditItemPageObject {
 
-    protected AddItemPage() {
-        Log.i("Activity: ", ActivityHelper.getActivityName());
+    public EditItemPageObject() {
     }
 
-    public ItemListPage addItem(String item) {
+    public ItemListPageObject addItem(String item) {
         onView(withId(R.id.newItemEditText)).perform(typeText(item), closeSoftKeyboard());
-        ActionHelper.clickOnId(R.id.fabSave);
-        return new ItemListPage();
+//        ActionHelper.clickOnId(R.id.fabSave);
+        return new ItemListPageObject();
     }
 
-    public ItemListPage addItem(String item, String category, String priority) {
+    public ItemListPageObject addItem(String item, String category, String priority) {
 
         onView(withId(R.id.newItemEditText)).perform(typeText(item), closeSoftKeyboard());
 
@@ -41,12 +36,14 @@ public class AddItemPage {
             onView(withText(priority)).perform(click());
         }
 
-        ActionHelper.clickOnId(R.id.fabSave);
-        return new ItemListPage();
+//        ActionHelper.clickOnId(R.id.fabSave);
+        return new ItemListPageObject();
     }
 
 
-    public void assertPageIsOpened() {
+    public EditItemPageObject validate() {
         onView(withId(R.id.fabSave)).check(matches(isDisplayed()));
+
+        return this;
     }
 }
