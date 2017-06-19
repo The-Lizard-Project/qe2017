@@ -15,14 +15,17 @@ import pl.lizardproject.qe2017.model.Priority;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
+import static pl.lizardproject.qe2017.util.action.CustomViewActions.clickOnChild;
 
 public class ItemListPageObject {
     private final ViewInteraction itemList;
@@ -40,14 +43,28 @@ public class ItemListPageObject {
     }
 
     public ItemListPageObject removeItem(String itemName) {
-        itemList.perform(RecyclerViewActions.actionOnItem(allOf(withId(R.id.deleteButton), hasSibling(withText(itemName))), click()));
+        itemList.perform(RecyclerViewActions.actionOnItem(withChild(withText(itemName)), clickOnChild(R.id.deleteButton)));
+
+        return this;
+    }
+
+    public ItemListPageObject checkItem(String itemName) {
+        itemList.perform(RecyclerViewActions.actionOnItem(withChild(withText(itemName)), clickOnChild(R.id.checkbox)));
 
         return this;
     }
 
     public void validateItemExists(String name, Category category, Priority priority, boolean isChecked) {
-        String categoryString = "Category:" + category.name();
-        String priorityString = "Priority:" + priority.name();
+        getItemView(name, category, priority, isChecked).check(matches(isDisplayed()));
+    }
+
+    public void validateItemNotExists(String name, Category category, Priority priority, boolean isChecked) {
+        getItemView(name, category, priority, isChecked).check(doesNotExist());
+    }
+
+    private ViewInteraction getItemView(String name, Category category, Priority priority, boolean isChecked) {
+        String categoryString = "Category: " + category.name().toLowerCase();
+        String priorityString = "Priority: " + priority.name().toLowerCase();
 
         Matcher<View> checkedMatcher;
         if (isChecked) {
@@ -56,7 +73,7 @@ public class ItemListPageObject {
             checkedMatcher = isNotChecked();
         }
 
-        onView(allOf(withId(R.id.checkbox), hasSibling(withText(name)), hasSibling(withText(categoryString)), hasSibling(withText(priorityString)))).check(matches(checkedMatcher));
+        return onView(allOf(withId(R.id.checkbox), hasSibling(withText(name)), hasSibling(withText(categoryString)), hasSibling(withText(priorityString)), hasSibling(checkedMatcher)));
     }
 
     public ItemListPageObject validate() {

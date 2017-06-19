@@ -1,5 +1,6 @@
 package pl.lizardproject.qe2017.test.screen;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -25,17 +26,15 @@ import pl.lizardproject.qe2017.session.UserSession;
 @RunWith(AndroidJUnit4.class)
 public class Exercise4 {
 
-    @Rule public ActivityTestRule<ItemListActivity> activityTestRule = new ActivityTestRule<>(ItemListActivity.class);
+    @Rule public ActivityTestRule<ItemListActivity> activityTestRule = new ActivityTestRule<>(ItemListActivity.class, false, false);
 
     private DatabaseFacade databaseFacade;
     private DbUserEntity dbUser;
 
     @Before
     public void setUp() {
-        databaseFacade = ((MyApplication) activityTestRule.getActivity().getApplication()).getDatabaseFacade();
-
-        //todo: fix mock user
-        UserSession userSession = ((MyApplication) activityTestRule.getActivity().getApplication()).getUserSession();
+        databaseFacade = ((MyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).getDatabaseFacade();
+        UserSession userSession = ((MyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).getUserSession();
 
         // todo: move to sessionhelper
         dbUser = new ItemListPageObject().addUserToDatabase("user", "pass", databaseFacade);
@@ -54,6 +53,8 @@ public class Exercise4 {
     */
     @Test
     public void validateScreen() {
+        activityTestRule.launchActivity(null);
+
         new ItemListPageObject()
                 .validate();
     }
@@ -66,6 +67,8 @@ public class Exercise4 {
     */
     @Test
     public void openAddItemScreen() {
+        activityTestRule.launchActivity(null);
+
         new ItemListPageObject()
                 .openAddItemScreen()
                 .validate();
@@ -74,11 +77,14 @@ public class Exercise4 {
     /* TODO TASK 3
      *
      * 1, Add item to database - use addItemToDatabase method from PageObject
-     * 2. Validate if the screen is opened
+     * 2. Remove item
+     * 3. Validate if the item is removed
      *
     */
     @Test
     public void removeItem() {
+        activityTestRule.launchActivity(null);
+
         String itemName = "new item";
         Category itemCategory = Category.FRUITS;
         Priority itemPriority = Priority.NORMAL;
@@ -87,6 +93,28 @@ public class Exercise4 {
         new ItemListPageObject()
                 .addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade)
                 .removeItem(itemName)
-                .validateItemExists(itemName, itemCategory, itemPriority, isChecked);
+                .validateItemNotExists(itemName, itemCategory, itemPriority, isChecked);
+    }
+
+    /* TODO TASK 4
+     *
+     * 1, Add item to database
+     * 2. Check the item
+     * 3. Validate if the item is checked
+     *
+    */
+    @Test
+    public void checkItem() {
+        activityTestRule.launchActivity(null);
+
+        String itemName = "new item";
+        Category itemCategory = Category.FRUITS;
+        Priority itemPriority = Priority.NORMAL;
+        boolean isChecked = false;
+
+        new ItemListPageObject()
+                .addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade)
+                .checkItem(itemName)
+                .validateItemExists(itemName, itemCategory, itemPriority, !isChecked);
     }
 }
