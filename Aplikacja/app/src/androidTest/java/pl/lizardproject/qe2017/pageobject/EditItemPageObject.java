@@ -1,6 +1,8 @@
 package pl.lizardproject.qe2017.pageobject;
 
 import pl.lizardproject.qe2017.R;
+import pl.lizardproject.qe2017.model.Category;
+import pl.lizardproject.qe2017.model.Priority;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -41,7 +43,7 @@ public class EditItemPageObject {
     }
 
 
-    public EditItemPageObject validate() {
+    public EditItemPageObject validate(String itemName, Category itemCategory, Priority itemPriority) {
         onView(withId(R.id.fabSave)).check(matches(isDisplayed()));
 
         return this;

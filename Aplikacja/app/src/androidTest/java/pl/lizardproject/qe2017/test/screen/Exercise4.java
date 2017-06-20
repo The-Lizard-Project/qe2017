@@ -61,7 +61,7 @@ public class Exercise4 {
 
     /* TODO TASK 2
      *
-     * 1, Click on add button
+     * 1. Click on add button
      * 2. Validate if the screen is opened
      *
     */
@@ -71,12 +71,34 @@ public class Exercise4 {
 
         new ItemListPageObject()
                 .openAddItemScreen()
-                .validate();
+                .validate("", Category.FRUITS, Priority.NORMAL);
     }
 
     /* TODO TASK 3
+    *
+    * 1. Add item to database - use addItemToDatabase method from PageObject
+    * 1. Click on item
+    * 2. Validate if the screen is opened
+    *
+   */
+    @Test
+    public void openEditItemScreen() {
+        activityTestRule.launchActivity(null);
+
+        String itemName = "new item";
+        Category itemCategory = Category.FRUITS;
+        Priority itemPriority = Priority.NORMAL;
+        boolean isChecked = false;
+
+        new ItemListPageObject()
+                .addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade)
+                .clickOnItem(itemName)
+                .validate(itemName, itemCategory, itemPriority);
+    }
+
+    /* TODO TASK 4
      *
-     * 1, Add item to database - use addItemToDatabase method from PageObject
+     * 1. Add item to database
      * 2. Remove item
      * 3. Validate if the item is removed
      *
@@ -96,9 +118,9 @@ public class Exercise4 {
                 .validateItemNotExists(itemName, itemCategory, itemPriority, isChecked);
     }
 
-    /* TODO TASK 4
+    /* TODO TASK 5
      *
-     * 1, Add item to database
+     * 1. Add item to database
      * 2. Check the item
      * 3. Validate if the item is checked
      *

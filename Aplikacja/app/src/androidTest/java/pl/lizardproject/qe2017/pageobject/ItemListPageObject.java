@@ -42,6 +42,12 @@ public class ItemListPageObject {
         return new EditItemPageObject();
     }
 
+    public EditItemPageObject clickOnItem(String itemName) {
+        itemList.perform(RecyclerViewActions.actionOnItem(withChild(withText(itemName)), click()));
+
+        return new EditItemPageObject();
+    }
+
     public ItemListPageObject removeItem(String itemName) {
         itemList.perform(RecyclerViewActions.actionOnItem(withChild(withText(itemName)), clickOnChild(R.id.deleteButton)));
 

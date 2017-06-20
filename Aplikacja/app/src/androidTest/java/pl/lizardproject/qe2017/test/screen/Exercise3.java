@@ -3,10 +3,14 @@ package pl.lizardproject.qe2017.test.screen;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import pl.lizardproject.qe2017.MyApplication;
+import pl.lizardproject.qe2017.database.DatabaseFacade;
 import pl.lizardproject.qe2017.pageobject.RegisterPageObject;
 import pl.lizardproject.qe2017.register.RegisterActivity;
 
@@ -17,6 +21,18 @@ import pl.lizardproject.qe2017.register.RegisterActivity;
 public class Exercise3 {
 
     @Rule public ActivityTestRule<RegisterActivity> activityTestRule = new ActivityTestRule<>(RegisterActivity.class);
+
+    private DatabaseFacade databaseFacade;
+
+    @Before
+    public void setUp() {
+        databaseFacade = ((MyApplication) activityTestRule.getActivity().getApplicationContext()).getDatabaseFacade();
+    }
+
+    @After
+    public void tearDown() {
+        databaseFacade.drop();
+    }
 
     /* TODO TASK 1
      *
@@ -31,7 +47,7 @@ public class Exercise3 {
 
     /* TODO TASK 2
      *
-     * 1, Register user
+     * 1. Register user
      * 2. Validate if the screen is opened
      *
     */
