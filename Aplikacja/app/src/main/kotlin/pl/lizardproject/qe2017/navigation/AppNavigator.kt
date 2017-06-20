@@ -34,8 +34,4 @@ class AppNavigator(private val activity: Activity) {
                 .itemId(itemId)
                 .build())
     }
-
-    fun closeActivity() {
-        activity.finish()
-    }
 }

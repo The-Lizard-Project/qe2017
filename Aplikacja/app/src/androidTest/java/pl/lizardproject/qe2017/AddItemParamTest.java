@@ -51,7 +51,7 @@ public class AddItemParamTest {
         EditItemPageObject addItemPage;
 
 //        addItemPage = itemListPage.goToAddItemPage();
-//        itemListPage = addItemPage.addItem(operand);
+//        itemListPage = addItemPage.saveItem(operand);
         onView(allOf(hasSibling(withText(operand)), withId(R.id.deleteButton))).perform(click());
     }
 }

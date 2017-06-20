@@ -15,7 +15,6 @@ import pl.lizardproject.qe2017.login.LoginActivity;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
@@ -94,8 +93,6 @@ public class Exercise1 {
      * 10. Click save button
      * 11. Verify if item is added
      *
-     * New methods: closeSoftKeyboard()
-     *
      */
     @Test
     public void addItem() {
@@ -114,7 +111,7 @@ public class Exercise1 {
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).check(matches(isDisplayed()));
 
         // TODO 9,10
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("ziemniaki"), closeSoftKeyboard());
+        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("ziemniaki"));
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabSave)).perform(click());
 
         // TODO 11
@@ -158,7 +155,7 @@ public class Exercise1 {
         //TODO 7,8,9,10,11,12
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabAdd)).perform(click());
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).check(matches(isDisplayed()));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("buraki"), closeSoftKeyboard());
+        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("buraki"));
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.category_spinner)).perform(click());
         onView(withText("other")).perform(click());
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabSave)).perform(click());
@@ -166,7 +163,7 @@ public class Exercise1 {
         //TODO 13,14,15,16,17,18
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabAdd)).perform(click());
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).check(matches(isDisplayed()));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("buraki"), closeSoftKeyboard());
+        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("buraki"));
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.priority_spinner)).perform(click());
         onView(withText("critical")).perform(click());
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabSave)).perform(click());

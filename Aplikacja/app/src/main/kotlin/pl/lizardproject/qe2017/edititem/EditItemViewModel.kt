@@ -35,7 +35,7 @@ class EditItemViewModel(private val itemId: Int?, private val databaseFacade: Da
             val dbItem = Item(itemId, newItemName.get(), Category.values()[newItemCategoryPosition.get()], Priority.values()[newItemPriorityPosition.get()], userSession.user!!).toDbModel()
             databaseFacade.saveItem(dbItem)
                     .subscribe(
-                            { appNavigator.closeActivity() },
+                            { appNavigator.openItemListActivity() },
                             { messenger.showMessage(view, it.message!!) })
         } else {
             messenger.showMessage(view, R.string.editItemErrorEmptyName)

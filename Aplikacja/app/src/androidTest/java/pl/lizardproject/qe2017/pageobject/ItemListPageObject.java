@@ -60,12 +60,16 @@ public class ItemListPageObject {
         return this;
     }
 
-    public void validateItemExists(String name, Category category, Priority priority, boolean isChecked) {
+    public ItemListPageObject validateItemExists(String name, Category category, Priority priority, boolean isChecked) {
         getItemView(name, category, priority, isChecked).check(matches(isDisplayed()));
+
+        return this;
     }
 
-    public void validateItemNotExists(String name, Category category, Priority priority, boolean isChecked) {
+    public ItemListPageObject validateItemNotExists(String name, Category category, Priority priority, boolean isChecked) {
         getItemView(name, category, priority, isChecked).check(doesNotExist());
+
+        return this;
     }
 
     private ViewInteraction getItemView(String name, Category category, Priority priority, boolean isChecked) {
