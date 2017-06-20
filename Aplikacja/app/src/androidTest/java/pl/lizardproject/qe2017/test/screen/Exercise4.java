@@ -16,9 +16,9 @@ import pl.lizardproject.qe2017.database.model.DbUserEntity;
 import pl.lizardproject.qe2017.itemlist.ItemListActivity;
 import pl.lizardproject.qe2017.model.Category;
 import pl.lizardproject.qe2017.model.Priority;
-import pl.lizardproject.qe2017.model.User;
 import pl.lizardproject.qe2017.pageobject.ItemListPageObject;
 import pl.lizardproject.qe2017.session.UserSession;
+import pl.lizardproject.qe2017.util.TestDataHelper;
 
 /*
  * Item list screen test
@@ -28,22 +28,21 @@ public class Exercise4 {
 
     @Rule public ActivityTestRule<ItemListActivity> activityTestRule = new ActivityTestRule<>(ItemListActivity.class, false, false);
 
-    private DatabaseFacade databaseFacade;
     private DbUserEntity dbUser;
+    private TestDataHelper testDataHelper;
 
     @Before
     public void setUp() {
-        databaseFacade = ((MyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).getDatabaseFacade();
+        DatabaseFacade databaseFacade = ((MyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).getDatabaseFacade();
         UserSession userSession = ((MyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).getUserSession();
+        testDataHelper = new TestDataHelper(databaseFacade);
 
-        // todo: move to sessionhelper
-        dbUser = new ItemListPageObject().addUserToDatabase("user", "pass", databaseFacade);
-        userSession.start(new User("user", "pass", dbUser.getId()));
+        dbUser = testDataHelper.loginUser("user", "pass", userSession);
     }
 
     @After
     public void tearDown() {
-        databaseFacade.drop();
+        testDataHelper.dropDatabase();
     }
 
     /* TODO TASK 1
@@ -83,15 +82,15 @@ public class Exercise4 {
    */
     @Test
     public void openEditItemScreen() {
-        activityTestRule.launchActivity(null);
-
         String itemName = "new item";
         Category itemCategory = Category.FRUITS;
         Priority itemPriority = Priority.NORMAL;
         boolean isChecked = false;
+        testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
+
+        activityTestRule.launchActivity(null);
 
         new ItemListPageObject()
-                .addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade)
                 .clickOnItem(itemName)
                 .validate(itemName, itemCategory, itemPriority);
     }
@@ -105,15 +104,15 @@ public class Exercise4 {
     */
     @Test
     public void removeItem() {
-        activityTestRule.launchActivity(null);
-
         String itemName = "new item";
         Category itemCategory = Category.FRUITS;
         Priority itemPriority = Priority.NORMAL;
         boolean isChecked = false;
+        testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
+
+        activityTestRule.launchActivity(null);
 
         new ItemListPageObject()
-                .addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade)
                 .removeItem(itemName)
                 .validateItemNotExists(itemName, itemCategory, itemPriority, isChecked);
     }
@@ -127,15 +126,15 @@ public class Exercise4 {
     */
     @Test
     public void checkItem() {
-        activityTestRule.launchActivity(null);
-
         String itemName = "new item";
         Category itemCategory = Category.FRUITS;
         Priority itemPriority = Priority.NORMAL;
         boolean isChecked = false;
+        testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
+
+        activityTestRule.launchActivity(null);
 
         new ItemListPageObject()
-                .addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade)
                 .checkItem(itemName)
                 .validateItemExists(itemName, itemCategory, itemPriority, !isChecked);
     }

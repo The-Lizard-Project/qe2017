@@ -7,9 +7,6 @@ import android.view.View;
 import org.hamcrest.Matcher;
 
 import pl.lizardproject.qe2017.R;
-import pl.lizardproject.qe2017.database.DatabaseFacade;
-import pl.lizardproject.qe2017.database.model.DbItemEntity;
-import pl.lizardproject.qe2017.database.model.DbUserEntity;
 import pl.lizardproject.qe2017.model.Category;
 import pl.lizardproject.qe2017.model.Priority;
 
@@ -72,6 +69,13 @@ public class ItemListPageObject {
         return this;
     }
 
+    public ItemListPageObject validate() {
+        itemList.check(matches(isDisplayed()));
+        addItemFab.check(matches(isDisplayed()));
+
+        return this;
+    }
+
     private ViewInteraction getItemView(String name, Category category, Priority priority, boolean isChecked) {
         String categoryString = "Category: " + category.name().toLowerCase();
         String priorityString = "Priority: " + priority.name().toLowerCase();
@@ -84,39 +88,5 @@ public class ItemListPageObject {
         }
 
         return onView(allOf(withId(R.id.checkbox), hasSibling(withText(name)), hasSibling(withText(categoryString)), hasSibling(withText(priorityString)), hasSibling(checkedMatcher)));
-    }
-
-    public ItemListPageObject validate() {
-        itemList.check(matches(isDisplayed()));
-        addItemFab.check(matches(isDisplayed()));
-
-        return this;
-    }
-
-    public ItemListPageObject addItemToDatabase(String name, Category category, Priority priority, boolean isChecked, DbUserEntity user, DatabaseFacade databaseFacade) {
-        DbItemEntity item = new DbItemEntity();
-        item.setName(name);
-        item.setCategory(category);
-        item.setPriority(priority);
-        item.setChecked(isChecked);
-        item.setUser(user);
-
-        databaseFacade.saveItem(item)
-                .toBlocking()
-                .value();
-
-        return this;
-    }
-
-    public DbUserEntity addUserToDatabase(String username, String password, DatabaseFacade databaseFacade) {
-        DbUserEntity user = new DbUserEntity();
-        user.setName(username);
-        user.setPassword(password);
-
-        databaseFacade.saveUser(user)
-                .toBlocking()
-                .value();
-
-        return user;
     }
 }

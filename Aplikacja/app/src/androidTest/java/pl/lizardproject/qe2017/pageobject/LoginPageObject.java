@@ -3,8 +3,6 @@ package pl.lizardproject.qe2017.pageobject;
 import android.support.test.espresso.ViewInteraction;
 
 import pl.lizardproject.qe2017.R;
-import pl.lizardproject.qe2017.database.DatabaseFacade;
-import pl.lizardproject.qe2017.database.model.DbUserEntity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -15,6 +13,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
 
 public class LoginPageObject {
+
+    private static final int INPUT_TYPE = 129;
 
     private final ViewInteraction usernameEditText;
     private final ViewInteraction passwordEditText;
@@ -47,21 +47,9 @@ public class LoginPageObject {
     public LoginPageObject validate() {
         usernameEditText.check(matches(isDisplayed()));
         passwordEditText.check(matches(isDisplayed()));
-        passwordEditText.check(matches(withInputType(129)));
+        passwordEditText.check(matches(withInputType(INPUT_TYPE)));
         loginButton.check(matches(isDisplayed()));
         registerButton.check(matches(isDisplayed()));
-
-        return this;
-    }
-
-    public LoginPageObject addUserToDatabase(String username, String password, DatabaseFacade databaseFacade) {
-        DbUserEntity user = new DbUserEntity();
-        user.setName(username);
-        user.setPassword(password);
-
-        databaseFacade.saveUser(user)
-                .toBlocking()
-                .value();
 
         return this;
     }

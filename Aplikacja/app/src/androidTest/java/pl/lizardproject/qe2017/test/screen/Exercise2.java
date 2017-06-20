@@ -13,6 +13,7 @@ import pl.lizardproject.qe2017.MyApplication;
 import pl.lizardproject.qe2017.database.DatabaseFacade;
 import pl.lizardproject.qe2017.login.LoginActivity;
 import pl.lizardproject.qe2017.pageobject.LoginPageObject;
+import pl.lizardproject.qe2017.util.TestDataHelper;
 
 /*
  * Login screen test
@@ -22,16 +23,17 @@ public class Exercise2 {
 
     @Rule public ActivityTestRule<LoginActivity> activityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
-    private DatabaseFacade databaseFacade;
+    private TestDataHelper testDataHelper;
 
     @Before
     public void setUp() {
-        databaseFacade = ((MyApplication) activityTestRule.getActivity().getApplication()).getDatabaseFacade();
+        DatabaseFacade databaseFacade = ((MyApplication) activityTestRule.getActivity().getApplication()).getDatabaseFacade();
+        testDataHelper = new TestDataHelper(databaseFacade);
     }
 
     @After
     public void tearDown() {
-        databaseFacade.drop();
+        testDataHelper.dropDatabase();
     }
 
     /* TODO TASK 1
@@ -73,8 +75,9 @@ public class Exercise2 {
         String username = "user";
         String password = "password";
 
+        testDataHelper.addUserToDatabase(username, password);
+
         new LoginPageObject()
-                .addUserToDatabase(username, password, databaseFacade)
                 .login(username, password)
                 .validate();
     }

@@ -15,6 +15,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
 
 public class RegisterPageObject {
 
+    private static final int INPUT_TYPE = 129;
+
     private final ViewInteraction usernameEditText;
     private final ViewInteraction passwordEditText;
     private final ViewInteraction registerButton;
@@ -38,7 +40,7 @@ public class RegisterPageObject {
     public RegisterPageObject validate() {
         usernameEditText.check(matches(isDisplayed()));
         passwordEditText.check(matches(isDisplayed()));
-        passwordEditText.check(matches(withInputType(129)));
+        passwordEditText.check(matches(withInputType(INPUT_TYPE)));
         registerButton.check(matches(isDisplayed()));
 
         return this;

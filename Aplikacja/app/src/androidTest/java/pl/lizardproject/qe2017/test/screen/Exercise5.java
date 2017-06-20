@@ -18,9 +18,9 @@ import pl.lizardproject.qe2017.edititem.EditItemActivity;
 import pl.lizardproject.qe2017.edititem.Henson;
 import pl.lizardproject.qe2017.model.Category;
 import pl.lizardproject.qe2017.model.Priority;
-import pl.lizardproject.qe2017.model.User;
 import pl.lizardproject.qe2017.pageobject.EditItemPageObject;
 import pl.lizardproject.qe2017.session.UserSession;
+import pl.lizardproject.qe2017.util.TestDataHelper;
 
 /*
  * Edit item screen test
@@ -30,22 +30,21 @@ public class Exercise5 {
 
     @Rule public ActivityTestRule<EditItemActivity> activityTestRule = new ActivityTestRule<>(EditItemActivity.class, false, false);
 
-    private DatabaseFacade databaseFacade;
     private DbUserEntity dbUser;
+    private TestDataHelper testDataHelper;
 
     @Before
     public void setUp() {
-        databaseFacade = ((MyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).getDatabaseFacade();
+        DatabaseFacade databaseFacade = ((MyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).getDatabaseFacade();
         UserSession userSession = ((MyApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).getUserSession();
+        testDataHelper = new TestDataHelper(databaseFacade);
 
-        // todo: move to sessionhelper
-        dbUser = new EditItemPageObject().addUserToDatabase("user", "pass", databaseFacade);
-        userSession.start(new User("user", "pass", dbUser.getId()));
+        dbUser = testDataHelper.loginUser("user", "pass", userSession);
     }
 
     @After
     public void tearDown() {
-        databaseFacade.drop();
+        testDataHelper.dropDatabase();
     }
 
     /* TODO TASK 1
@@ -73,7 +72,7 @@ public class Exercise5 {
         Category itemCategory = Category.FRUITS;
         Priority itemPriority = Priority.NORMAL;
         boolean isChecked = false;
-        DbItemEntity item = new EditItemPageObject().addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade);
+        DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
 
         activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
                 .gotoEditItemActivity()
@@ -112,15 +111,13 @@ public class Exercise5 {
    */
     @Test
     public void editItem() {
-        activityTestRule.launchActivity(null);
-
         String itemName = "new item";
         String newItemName = "updated item";
         Category itemCategory = Category.FRUITS;
         Priority itemPriority = Priority.NORMAL;
         Priority newItemPriority = Priority.MINOR;
         boolean isChecked = false;
-        DbItemEntity item = new EditItemPageObject().addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade);
+        DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
 
         activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
                 .gotoEditItemActivity()
@@ -142,15 +139,13 @@ public class Exercise5 {
    */
     @Test
     public void editCheckedItem() {
-        activityTestRule.launchActivity(null);
-
         String itemName = "new item";
         String newItemName = "updated item";
         Category itemCategory = Category.FRUITS;
         Priority itemPriority = Priority.NORMAL;
         Priority newItemPriority = Priority.MINOR;
         boolean isChecked = true;
-        DbItemEntity item = new EditItemPageObject().addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser, databaseFacade);
+        DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
 
         activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
                 .gotoEditItemActivity()
