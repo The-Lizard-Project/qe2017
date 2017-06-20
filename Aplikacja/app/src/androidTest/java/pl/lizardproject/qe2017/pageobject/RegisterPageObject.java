@@ -47,6 +47,7 @@ public class RegisterPageObject {
     }
 
     public LoginPageObject goBack() {
+        Espresso.closeSoftKeyboard();
         Espresso.pressBack();
 
         return new LoginPageObject();

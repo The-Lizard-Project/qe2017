@@ -1,5 +1,6 @@
 package pl.lizardproject.qe2017.test;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -13,7 +14,6 @@ import pl.lizardproject.qe2017.MyApplication;
 import pl.lizardproject.qe2017.login.LoginActivity;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -40,7 +40,7 @@ public class Exercise1 {
      * 4. Move to the previous screen
      * 5. Validate if the screen is opened
      *
-     * Methods: onView(), withId(), perform(), click(), check(), matches(), isDisplayed(), pressBack()
+     * Methods: onView(), withId(), perform(), click(), check(), matches(), isDisplayed(), closeSoftKeyboard(), pressBack()
     */
     @Test
     public void openRegisterScreen() {
@@ -49,7 +49,8 @@ public class Exercise1 {
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newUsernameEditText)).check(matches(isDisplayed()));
 
         //TODO 4,5
-        pressBack();
+        Espresso.closeSoftKeyboard();
+        Espresso.pressBack();
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.usernameEditText)).check(matches(isDisplayed()));
     }
 
