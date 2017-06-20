@@ -1,5 +1,6 @@
 package pl.lizardproject.qe2017.pageobject;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 
 import pl.lizardproject.qe2017.R;
@@ -41,5 +42,11 @@ public class RegisterPageObject {
         registerButton.check(matches(isDisplayed()));
 
         return this;
+    }
+
+    public LoginPageObject goBack() {
+        Espresso.pressBack();
+
+        return new LoginPageObject();
     }
 }
