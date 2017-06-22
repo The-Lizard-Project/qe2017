@@ -8,8 +8,6 @@ import android.view.View;
 
 import org.hamcrest.Matcher;
 
-import static android.support.test.espresso.action.ViewActions.click;
-
 public final class CustomViewActions {
 
     public static ViewAction clickOnChild(@IdRes final int childId) {
@@ -17,8 +15,9 @@ public final class CustomViewActions {
 
             @Override
             public void perform(UiController uiController, View view) {
-                View viewToClick = view.findViewById(childId);
-                click().perform(uiController, viewToClick);
+                // find child view and click on it
+                // new method: view.findViewById
+
             }
 
             @Override

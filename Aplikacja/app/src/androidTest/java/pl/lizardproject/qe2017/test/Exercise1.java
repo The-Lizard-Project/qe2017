@@ -1,6 +1,5 @@
 package pl.lizardproject.qe2017.test;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -15,12 +14,6 @@ import pl.lizardproject.qe2017.login.LoginActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class Exercise1 {
@@ -44,14 +37,8 @@ public class Exercise1 {
     */
     @Test
     public void openRegisterScreen() {
-        //TODO 1,2,3
         onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.registerButton)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newUsernameEditText)).check(matches(isDisplayed()));
 
-        //TODO 4,5
-        Espresso.closeSoftKeyboard();
-        Espresso.pressBack();
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.usernameEditText)).check(matches(isDisplayed()));
     }
 
     /* TODO TASK 2
@@ -67,17 +54,7 @@ public class Exercise1 {
     */
     @Test
     public void registerUser() {
-        //TODO 1,2
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.registerButton)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newUsernameEditText)).check(matches(isDisplayed()));
 
-        //TODO 3,4,5
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newUsernameEditText)).perform(typeText("user"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newPasswordEditText)).perform(typeText("pass"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.registerButton)).perform(click());
-
-        //TODO 6
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabAdd)).check(matches(isDisplayed()));
     }
 
     /* TODO TASK 3
@@ -97,26 +74,7 @@ public class Exercise1 {
      */
     @Test
     public void addItem() {
-        //TODO 1,2
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.registerButton)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newUsernameEditText)).check(matches(isDisplayed()));
 
-        //TODO 3,4,5,6
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newUsernameEditText)).perform(typeText("user"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newPasswordEditText)).perform(typeText("pass"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.registerButton)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabAdd)).check(matches(isDisplayed()));
-
-        //TODO 7,8
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabAdd)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).check(matches(isDisplayed()));
-
-        // TODO 9,10
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("ziemniaki"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabSave)).perform(click());
-
-        // TODO 11
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.text)).check(matches(withText("ziemniaki")));
     }
 
     /* TODO TASK 4
@@ -143,34 +101,6 @@ public class Exercise1 {
      */
     @Test
     public void addTheSameItemNameTwice() {
-        //TODO 1,2
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.registerButton)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newUsernameEditText)).check(matches(isDisplayed()));
 
-        //TODO 3,4,5,6
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newUsernameEditText)).perform(typeText("user"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newPasswordEditText)).perform(typeText("pass"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.registerButton)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabAdd)).check(matches(isDisplayed()));
-
-        //TODO 7,8,9,10,11,12
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabAdd)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).check(matches(isDisplayed()));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("buraki"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.category_spinner)).perform(click());
-        onView(withText("other")).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabSave)).perform(click());
-
-        //TODO 13,14,15,16,17,18
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabAdd)).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).check(matches(isDisplayed()));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.newItemEditText)).perform(typeText("buraki"));
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.priority_spinner)).perform(click());
-        onView(withText("critical")).perform(click());
-        onView(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.fabSave)).perform(click());
-
-        //TODO 19
-        onView(allOf(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.text), withText("buraki"), hasSibling(withText("Category: other")))).check(matches(isDisplayed()));
-        onView(allOf(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.text), withText("buraki"), hasSibling(withText("Priority: critical")))).check(matches(isDisplayed()));
     }
 }

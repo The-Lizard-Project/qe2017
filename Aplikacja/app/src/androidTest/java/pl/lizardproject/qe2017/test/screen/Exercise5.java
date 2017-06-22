@@ -12,13 +12,8 @@ import org.junit.runner.RunWith;
 
 import pl.lizardproject.qe2017.MyApplication;
 import pl.lizardproject.qe2017.database.DatabaseFacade;
-import pl.lizardproject.qe2017.database.model.DbItemEntity;
 import pl.lizardproject.qe2017.database.model.DbUserEntity;
 import pl.lizardproject.qe2017.edititem.EditItemActivity;
-import pl.lizardproject.qe2017.edititem.Henson;
-import pl.lizardproject.qe2017.model.Category;
-import pl.lizardproject.qe2017.model.Priority;
-import pl.lizardproject.qe2017.pageobject.EditItemPageObject;
 import pl.lizardproject.qe2017.session.UserSession;
 import pl.lizardproject.qe2017.util.TestDataHelper;
 
@@ -56,8 +51,6 @@ public class Exercise5 {
     public void validateScreen() {
         activityTestRule.launchActivity(null);
 
-        new EditItemPageObject()
-                .validate("", Category.FRUITS, Priority.NORMAL);
     }
 
     /* TODO TASK 2
@@ -68,19 +61,10 @@ public class Exercise5 {
     */
     @Test
     public void validateScreenWithItem() {
-        String itemName = "new item";
-        Category itemCategory = Category.FRUITS;
-        Priority itemPriority = Priority.NORMAL;
-        boolean isChecked = false;
-        DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
-
-        activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
-                .gotoEditItemActivity()
-                .itemId(item.getId())
-                .build());
-
-        new EditItemPageObject()
-                .validate(itemName, itemCategory, itemPriority);
+//        activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
+//                .gotoEditItemActivity()
+//                .itemId(item.getId())
+//                .build());
     }
 
     /* TODO TASK 3
@@ -91,15 +75,7 @@ public class Exercise5 {
     */
     @Test
     public void addItem() {
-        String itemName = "new item";
-        Category itemCategory = Category.FRUITS;
-        Priority itemPriority = Priority.NORMAL;
 
-        activityTestRule.launchActivity(null);
-
-        new EditItemPageObject()
-                .saveItem(itemName, itemCategory, itemPriority)
-                .validateItemExists(itemName, itemCategory, itemPriority, false);
     }
 
     /* TODO TASK 4
@@ -111,23 +87,7 @@ public class Exercise5 {
    */
     @Test
     public void editItem() {
-        String itemName = "new item";
-        String newItemName = "updated item";
-        Category itemCategory = Category.FRUITS;
-        Priority itemPriority = Priority.NORMAL;
-        Priority newItemPriority = Priority.MINOR;
-        boolean isChecked = false;
-        DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
 
-        activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
-                .gotoEditItemActivity()
-                .itemId(item.getId())
-                .build());
-
-        new EditItemPageObject()
-                .saveItem(newItemName, itemCategory, newItemPriority)
-                .validateItemExists(newItemName, itemCategory, newItemPriority, isChecked)
-                .validateItemNotExists(itemName, itemCategory, itemPriority, isChecked);
     }
 
     /* TODO TASK 5
@@ -139,22 +99,6 @@ public class Exercise5 {
    */
     @Test
     public void editCheckedItem() {
-        String itemName = "new item";
-        String newItemName = "updated item";
-        Category itemCategory = Category.FRUITS;
-        Priority itemPriority = Priority.NORMAL;
-        Priority newItemPriority = Priority.MINOR;
-        boolean isChecked = true;
-        DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
 
-        activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
-                .gotoEditItemActivity()
-                .itemId(item.getId())
-                .build());
-
-        new EditItemPageObject()
-                .saveItem(newItemName, itemCategory, newItemPriority)
-                .validateItemExists(newItemName, itemCategory, newItemPriority, !isChecked)
-                .validateItemNotExists(itemName, itemCategory, itemPriority, isChecked);
     }
 }

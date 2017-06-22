@@ -10,9 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import pl.lizardproject.qe2017.MyApplication;
-import pl.lizardproject.qe2017.R;
 import pl.lizardproject.qe2017.database.DatabaseFacade;
-import pl.lizardproject.qe2017.pageobject.RegisterPageObject;
 import pl.lizardproject.qe2017.register.RegisterActivity;
 import pl.lizardproject.qe2017.util.TestDataHelper;
 
@@ -44,8 +42,7 @@ public class Exercise3 {
     */
     @Test
     public void validateScreen() {
-        new RegisterPageObject()
-                .validate();
+
     }
 
     /* TODO TASK 2
@@ -56,12 +53,7 @@ public class Exercise3 {
     */
     @Test
     public void createUser() {
-        String username = "user";
-        String password = "password";
 
-        new RegisterPageObject()
-                .createUser(username, password)
-                .validate();
     }
 
     ////////////////// For volunteers //////////////////
@@ -75,12 +67,7 @@ public class Exercise3 {
     */
     @Test
     public void registerError() {
-        String username = "";
-        String password = "";
 
-        new RegisterPageObject()
-                .createUserWithError(username, password)
-                .validateError(R.string.registerError);
     }
 
     /* TODO TASK 4
@@ -92,13 +79,6 @@ public class Exercise3 {
     */
     @Test
     public void registerWithExistingUserError() {
-        String username = "user";
-        String password = "password";
 
-        testDataHelper.addUserToDatabase(username, password);
-
-        new RegisterPageObject()
-                .createUserWithError(username, password)
-                .validateError(R.string.registerErrorUserExists);
     }
 }
