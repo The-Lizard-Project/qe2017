@@ -1,5 +1,6 @@
 package pl.lizardproject.qe2017.test.screen;
 
+import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -14,6 +15,7 @@ import pl.lizardproject.qe2017.MyApplication;
 import pl.lizardproject.qe2017.database.DatabaseFacade;
 import pl.lizardproject.qe2017.database.model.DbUserEntity;
 import pl.lizardproject.qe2017.edititem.EditItemActivity;
+import pl.lizardproject.qe2017.edititem.Henson;
 import pl.lizardproject.qe2017.session.UserSession;
 import pl.lizardproject.qe2017.util.TestDataHelper;
 
@@ -61,10 +63,8 @@ public class Exercise5 {
     */
     @Test
     public void validateScreenWithItem() {
-//        activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
-//                .gotoEditItemActivity()
-//                .itemId(item.getId())
-//                .build());
+        // use getActivityIntent method
+
     }
 
     /* TODO TASK 3
@@ -100,5 +100,12 @@ public class Exercise5 {
     @Test
     public void editCheckedItem() {
 
+    }
+
+    private Intent getActivityIntent(int itemId) {
+        return Henson.with(InstrumentationRegistry.getTargetContext())
+                .gotoEditItemActivity()
+                .itemId(itemId)
+                .build();
     }
 }
