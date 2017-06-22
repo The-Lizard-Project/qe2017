@@ -64,7 +64,7 @@ public class Exercise2 {
 
     /* TODO TASK 3
      *
-     * 1. Add user to database - use addUserToDatabase method from PageObject
+     * 1. Add user to database - use addUserToDatabase method from testDataHelper
      * 2, Login as added user
      * 3. Add code inside ItemListPageObject
      * 4. Validate if the screen is opened
@@ -80,5 +80,24 @@ public class Exercise2 {
         new LoginPageObject()
                 .login(username, password)
                 .validate();
+    }
+
+    ////////////////// For volunteers //////////////////
+
+    /* TODO TASK 4
+     *
+     * 1. Add code inside LoginPageObject
+     * 2, Try to login
+     * 3. Validate if the error is displayed
+     *
+    */
+    @Test
+    public void loginError() {
+        String username = "user";
+        String password = "password";
+
+        new LoginPageObject()
+                .loginWithError(username, password)
+                .validateError();
     }
 }

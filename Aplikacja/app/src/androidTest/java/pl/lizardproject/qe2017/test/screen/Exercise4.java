@@ -75,9 +75,9 @@ public class Exercise4 {
 
     /* TODO TASK 3
     *
-    * 1. Add item to database - use addItemToDatabase method from PageObject
-    * 1. Click on item
-    * 2. Validate if the screen is opened
+    * 1. Add item to database - use addItemToDatabase method from testDataHelper
+    * 2. Click on item
+    * 3. Validate if the screen is opened
     *
    */
     @Test

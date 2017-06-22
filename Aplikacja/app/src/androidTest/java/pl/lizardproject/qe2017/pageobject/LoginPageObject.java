@@ -11,6 +11,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class LoginPageObject {
 
@@ -50,6 +51,20 @@ public class LoginPageObject {
         passwordEditText.check(matches(withInputType(INPUT_TYPE)));
         loginButton.check(matches(isDisplayed()));
         registerButton.check(matches(isDisplayed()));
+
+        return this;
+    }
+
+    ////////////////// For volunteers //////////////////
+
+    public LoginPageObject loginWithError(String username, String password) {
+        login(username, password);
+
+        return this;
+    }
+
+    public LoginPageObject validateError() {
+        onView(withText(R.string.loginError)).check(matches(isDisplayed()));
 
         return this;
     }

@@ -105,8 +105,8 @@ public class Exercise5 {
     /* TODO TASK 4
     *
     * 1. Add item to database
-    * 1. Update the item
-    * 2. Validate if the item is updated
+    * 2. Update the item
+    * 3. Validate if the item is updated
     *
    */
     @Test
@@ -133,8 +133,8 @@ public class Exercise5 {
     /* TODO TASK 5
     *
     * 1. Add checked item to database
-    * 1. Update the item
-    * 2. Validate if the item is updated and not checked
+    * 2. Update the item
+    * 3. Validate if the item is updated and not checked
     *
    */
     @Test

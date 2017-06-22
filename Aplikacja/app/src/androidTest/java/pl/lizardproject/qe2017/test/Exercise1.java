@@ -173,7 +173,4 @@ public class Exercise1 {
         onView(allOf(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.text), withText("buraki"), hasSibling(withText("Category: other")))).check(matches(isDisplayed()));
         onView(allOf(ViewMatchers.withId(pl.lizardproject.qe2017.R.id.text), withText("buraki"), hasSibling(withText("Priority: critical")))).check(matches(isDisplayed()));
     }
-
-    // TODO Task 5
-    // based on DRY pattern create methods that are common for TASKS 1 - 3 and then use this methods inside them
 }

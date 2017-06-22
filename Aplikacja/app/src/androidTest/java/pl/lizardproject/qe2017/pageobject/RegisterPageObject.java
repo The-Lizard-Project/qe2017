@@ -1,5 +1,6 @@
 package pl.lizardproject.qe2017.pageobject;
 
+import android.support.annotation.StringRes;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 
@@ -12,6 +13,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class RegisterPageObject {
 
@@ -51,5 +53,19 @@ public class RegisterPageObject {
         Espresso.pressBack();
 
         return new LoginPageObject();
+    }
+
+    ////////////////// For volunteers //////////////////
+
+    public RegisterPageObject createUserWithError(String username, String password) {
+        createUser(username, password);
+
+        return this;
+    }
+
+    public RegisterPageObject validateError(@StringRes int errorTextId) {
+        onView(withText(errorTextId)).check(matches(isDisplayed()));
+
+        return this;
     }
 }

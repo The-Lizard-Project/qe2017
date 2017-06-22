@@ -31,8 +31,8 @@ public class EditItemPageObject {
         saveItemFab = onView(withId(R.id.fabSave));
     }
 
-    public ItemListPageObject saveItem(String item, Category category, Priority priority) {
-        itemNameEditText.perform(clearText(), typeText(item));
+    public ItemListPageObject saveItem(String name, Category category, Priority priority) {
+        itemNameEditText.perform(clearText(), typeText(name));
 
         categorySpinner.perform(click());
         onView(withText(category.name().toLowerCase())).perform(click());
