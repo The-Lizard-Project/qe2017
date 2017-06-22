@@ -1,5 +1,6 @@
 package pl.lizardproject.qe2017.test.screen;
 
+import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -74,10 +75,7 @@ public class Exercise5 {
         boolean isChecked = false;
         DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
 
-        activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
-                .gotoEditItemActivity()
-                .itemId(item.getId())
-                .build());
+        activityTestRule.launchActivity(getActivityIntent(item.getId()));
 
         new EditItemPageObject()
                 .validate(itemName, itemCategory, itemPriority);
@@ -119,10 +117,7 @@ public class Exercise5 {
         boolean isChecked = false;
         DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
 
-        activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
-                .gotoEditItemActivity()
-                .itemId(item.getId())
-                .build());
+        activityTestRule.launchActivity(getActivityIntent(item.getId()));
 
         new EditItemPageObject()
                 .saveItem(newItemName, itemCategory, newItemPriority)
@@ -147,14 +142,18 @@ public class Exercise5 {
         boolean isChecked = true;
         DbItemEntity item = testDataHelper.addItemToDatabase(itemName, itemCategory, itemPriority, isChecked, dbUser);
 
-        activityTestRule.launchActivity(Henson.with(InstrumentationRegistry.getTargetContext())
-                .gotoEditItemActivity()
-                .itemId(item.getId())
-                .build());
+        activityTestRule.launchActivity(getActivityIntent(item.getId()));
 
         new EditItemPageObject()
                 .saveItem(newItemName, itemCategory, newItemPriority)
                 .validateItemExists(newItemName, itemCategory, newItemPriority, !isChecked)
                 .validateItemNotExists(itemName, itemCategory, itemPriority, isChecked);
+    }
+
+    private Intent getActivityIntent(int itemId) {
+        return Henson.with(InstrumentationRegistry.getTargetContext())
+                .gotoEditItemActivity()
+                .itemId(itemId)
+                .build();
     }
 }
