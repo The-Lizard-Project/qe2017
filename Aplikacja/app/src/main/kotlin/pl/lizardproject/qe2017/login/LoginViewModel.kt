@@ -23,7 +23,7 @@ class LoginViewModel(private val databaseFacade: DatabaseFacade, private val use
     fun loginCommand(view: View) {
         subscription = Single.just(User(username.get(), password.get()))
                 .doOnSubscribe { showSpinner.set(true) }
-                .flatMap { databaseFacade.loadUser(it.name, it.password) }
+                .flatMap { databaseFacade.loadUser(it.name) } // maybe there is a bug
                 .flatMap { if (it != null) Single.just(it) else Single.error(Exception(view.context.getString(R.string.loginError))) }
                 .doOnError { showSpinner.set(false) }
                 .subscribe(

@@ -95,13 +95,6 @@ public class Exercise2 {
     */
     @Test
     public void loginWithWrongPasswordError() {
-        String username = "user";
-        String password = "password";
 
-        testDataHelper.addUserToDatabase(username, password);
-
-        new LoginPageObject()
-                .loginWithError(username, "wrong password")
-                .validateError();
     }
 }
