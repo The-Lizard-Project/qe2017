@@ -50,7 +50,7 @@ public class Exercise1 {
      * 5. Click on register button
      * 6. Validate if the item list screen is opened
      *
-     * New methods: typeText()
+     * New method: typeText()
     */
     @Test
     public void registerUser() {
@@ -70,6 +70,8 @@ public class Exercise1 {
      * 9. Type item name
      * 10. Click save button
      * 11. Verify if item is added
+     *
+     * New method: withText()
      *
      */
     @Test

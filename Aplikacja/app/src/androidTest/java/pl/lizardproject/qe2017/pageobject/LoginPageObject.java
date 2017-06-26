@@ -1,16 +1,24 @@
 package pl.lizardproject.qe2017.pageobject;
 
+import android.support.test.espresso.ViewInteraction;
+
+import pl.lizardproject.qe2017.R;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+
 public class LoginPageObject {
 
     private static final int INPUT_TYPE = 129;
 
-//    private final ViewInteraction usernameEditText;
+    private final ViewInteraction usernameEditText;
 //    private final ViewInteraction passwordEditText;
 //    private final ViewInteraction loginButton;
 //    private final ViewInteraction registerButton;
 
     public LoginPageObject() {
-        // uncomment and find views
+        usernameEditText = onView(withId(R.id.usernameEditText));
+        // initialize all views
 
     }
 
